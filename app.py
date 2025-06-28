@@ -3,23 +3,19 @@ from transformers import pipeline, set_seed
 
 app = Flask(__name__)
 
-# Use text-generation instead of conversational
+# ✅ Use a lightweight model that fits within 512Mi RAM
 chatbot = pipeline("text-generation", model="distilgpt2")
-
+set_seed(42)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     response = ""
     if request.method == "POST":
         user_input = request.form["user_input"]
-        full_input = f"User: {user_input} \nBot:"
-        result = chatbot(full_input, max_length=100, pad_token_id=50256)
-        response = result[0]['generated_text'].split("Bot:")[-1].strip()
+        result = chatbot(user_input, max_length=100, pad_token_id=50256)
+        response = result[0]['generated_text']
     return render_template("index.html", response=response)
 
 @app.route("/ping")
 def ping():
     return "pong"
-
-
-
