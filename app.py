@@ -4,8 +4,8 @@ from transformers import pipeline, set_seed
 app = Flask(__name__)
 
 # Use text-generation instead of conversational
-chatbot = pipeline("text-generation", model="microsoft/DialoGPT-medium")
-set_seed(42)
+chatbot = pipeline("text-generation", model="distilgpt2")
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
